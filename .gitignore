@@ -1,0 +1,25 @@
+
+# Archivos de compilacion y binarios
+/build/
+/dist/
+/nbproject/private/
+/nbbuild/
+/nbdist/
+/nbactions.xml
+/nb-configuration.xml
+
+# Archivos de cache y temporales
+*.class
+*.jar
+*.war
+*.ear
+*.log
+*.tmp
+
+# Configuracion especifica del IDE
+/.idea/
+/*.iml
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
