@@ -12,7 +12,9 @@ import java.sql.*;
  */
 public class GestorPedidos {
     
+    
     private Connection conexionBD;
+    
     //solid inversion de dependencias: inyeccion de dependencias
     // Constructor con credenciales hardcodeadas
     /*public GestorPedidos() { 
@@ -32,7 +34,7 @@ public class GestorPedidos {
     
     // Nuevo método privado que centraliza las validaciones
     //Eliminar duplicacion de codigo (DRY)
-    private boolean validarCliente(String nombreCliente, String emailCliente) {
+    /*private boolean validarCliente(String nombreCliente, String emailCliente) {
         if (nombreCliente == null || nombreCliente.trim().isEmpty()) {
             System.out.println("Error: nombre de cliente invalido");
             return false;
@@ -42,7 +44,7 @@ public class GestorPedidos {
             return false;
         }
         return true;
-    }
+    }*/
     
     // Nuevo método privado que calcula el descuento
     //Reemplaza el segmento de codigo Abierto/Cerrado - Extraer calculo de descuentos
@@ -121,7 +123,7 @@ public class GestorPedidos {
             return; 
         }*/
         //Se reemplaza el ódigo anterior por esta llamda
-        if (!validarCliente(nombreCliente, emailCliente)) {
+        if (!Validador.esValido(nombreCliente, emailCliente)) {
             return;
         }
   
@@ -219,7 +221,7 @@ public class GestorPedidos {
             return; 
         }*/
         //Se reemplaza el ódigo anterior por esta llamda
-        if (!validarCliente(nombreCliente, emailCliente)) {
+        if (!Validador.esValido(nombreCliente, emailCliente)) {
             return;
         }
         

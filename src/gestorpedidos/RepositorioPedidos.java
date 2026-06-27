@@ -42,3 +42,17 @@ class RepositorioPedidos {
         }
     }
 }
+
+class Validador {
+    public static boolean esValido(String nombre, String email) {
+        if (nombre == null || nombre.trim().isEmpty()) {
+            System.out.println("Error: nombre inválido");
+            return false;
+        }
+        if (email == null || !email.contains("@")) {
+            System.out.println("Error: email inválido");
+            return false;
+        }
+        return true;
+    }
+}
