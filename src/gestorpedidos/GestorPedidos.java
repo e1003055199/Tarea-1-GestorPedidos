@@ -13,14 +13,23 @@ import java.sql.*;
 public class GestorPedidos {
     
     private Connection conexionBD;
-    
-    public GestorPedidos() { 
+    //solid inversion de dependencias: inyeccion de dependencias
+    // Constructor con credenciales hardcodeadas
+    /*public GestorPedidos() { 
         try { 
             this.conexionBD = DriverManager.getConnection("jdbc:mysql://localhost:3306/tienda", "root", "admin123"); 
         } catch (SQLException e) { 
             e.printStackTrace(); 
         } 
+    }*/
+    
+    // Constructor que recibe la conexión (inyección de dependencias)
+    public GestorPedidos(Connection conexionBD) {
+        this.conexionBD = conexionBD;
     }
+
+   
+    
     // Nuevo método privado que centraliza las validaciones
     //Eliminar duplicacion de codigo (DRY)
     private boolean validarCliente(String nombreCliente, String emailCliente) {
