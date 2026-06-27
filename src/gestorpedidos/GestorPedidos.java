@@ -13,7 +13,7 @@ import java.sql.*;
 public class GestorPedidos {
     private Connection conexionBD;
     private final CalculadoraDescuentos calculadora;
-    
+    private final GeneradorFacturas generador;
     
     
     //solid inversion de dependencias: inyeccion de dependencias
@@ -27,9 +27,10 @@ public class GestorPedidos {
     }*/
     
     // Constructor que recibe la conexión (inyección de dependencias)
-    public GestorPedidos(Connection conexionBD, CalculadoraDescuentos calculadora) {
+    public GestorPedidos(Connection conexionBD, CalculadoraDescuentos calculadora, GeneradorFacturas generador) {
         this.conexionBD = conexionBD;
         this.calculadora = calculadora;
+        this.generador = generador;
     }
 
    
@@ -66,7 +67,7 @@ public class GestorPedidos {
     
     // Nuevo método privado dedicado a generar la factura
     //solid: responsabilidad unica - separar generacion de factura
-    private void generarFactura(String nombreCliente, List<String> nombresProductos,
+    /*private void generarFactura(String nombreCliente, List<String> nombresProductos,
             List<Integer> cantidades, List<Double> preciosProductos,
             double subtotal, double descuento, double impuesto, double total) {
         try {
@@ -85,7 +86,7 @@ public class GestorPedidos {
         } catch (IOException e) {
             System.out.println("Error al generar la factura: " + e.getMessage());
         }
-    }
+    }*/
     
     // Nuevo método privado para notificación
     //solid: responsabilidad unica - separar notificacion por correo
@@ -184,8 +185,10 @@ public class GestorPedidos {
             System.out.println("Error al generar la factura: " + e.getMessage()); 
         } */
         //Se reemplaza el ódigo anterior por esta llamda
-        generarFactura(nombreCliente, nombresProductos, cantidades, preciosProductos, 
-               subtotal, descuento, impuesto, total);
+        //generarFactura(nombreCliente, nombresProductos, cantidades, preciosProductos, subtotal, descuento, impuesto, total);
+        
+        generador.generar(nombreCliente, nombresProductos, cantidades, preciosProductos,
+                subtotal, descuento, impuesto, total);
         
         //solid: responsabilidad unica - separar notificacion por correo
         /*System.out.println("Enviando correo a " + emailCliente + "..."); 

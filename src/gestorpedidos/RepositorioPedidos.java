@@ -66,3 +66,18 @@ class CalculadoraDescuentos {
         }
     }
 }
+
+class GeneradorFacturas {
+    public void generar(String cliente, List<String> productos, List<Integer> cantidades, 
+                        List<Double> precios, double subtotal, double desc, double imp, double total) {
+        try (FileWriter writer = new FileWriter("factura_" + cliente + ".txt")) {
+            writer.write("FACTURA\nCliente: " + cliente + "\n");
+            for (int i = 0; i < productos.size(); i++) {
+                writer.write(productos.get(i) + " x" + cantidades.get(i) + " = $" + (precios.get(i) * cantidades.get(i)) + "\n");
+            }
+            writer.write("Subtotal: $" + subtotal + "\nDescuento: $" + desc + "\nImpuesto: $" + imp + "\nTOTAL: $" + total + "\n");
+        } catch (IOException e) {
+            System.out.println("Error Archivo: " + e.getMessage());
+        }
+    }
+}
