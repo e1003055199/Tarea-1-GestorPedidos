@@ -268,6 +268,17 @@ public class GestorPedidos {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        String url = "jdbc:mysql://localhost:3306/tienda";
+        String user = "root";
+        String pass = "admin123";
+         try 
+         {
+            //Crear conexión
+            Connection conexion = DriverManager.getConnection(url, user, pass);
+            conexion.close();
+         } catch (SQLException e) {
+             e.printStackTrace();
+         }
     }
     
 }
