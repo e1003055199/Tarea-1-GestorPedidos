@@ -82,6 +82,19 @@ public class GestorPedidos {
         System.out.println("Cuerpo: " + cuerpo);
     }
     
+    // Nuevo método privado para guardar en BD (con PreparedStatement para seguridad)
+    private void guardarPedidoEnBD(String nombreCliente, double total) {
+        try {
+            String sql = "INSERT INTO pedidos (cliente, total) VALUES (?, ?)";
+            PreparedStatement pstmt = conexionBD.prepareStatement(sql);
+            pstmt.setString(1, nombreCliente);
+            pstmt.setDouble(2, total);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error al guardar el pedido: " + e.getMessage());
+        }
+    }
+    
     public void procesarPedido(String nombreCliente, String emailCliente, 
                                   List<String> nombresProductos, 
                                   List<Double> preciosProductos, 
@@ -123,16 +136,21 @@ public class GestorPedidos {
         double descuento = calcularDescuento(subtotal, tipoCliente);
         
         double impuesto = (subtotal - descuento) * 0.12; 
-        double total = subtotal - descuento + impuesto; 
-  
-        try { 
+        double total = subtotal - descuento + impuesto;
+        
+        //solid: responsabilidad unica - separar persistencia en bdd
+        // El bloque try-catch con Statement en procesarPedido()
+        /*try { 
             Statement stmt = conexionBD.createStatement(); 
             String sql = "INSERT INTO pedidos (cliente, total) VALUES ('" 
                          + nombreCliente + "', " + total + ")"; 
             stmt.executeUpdate(sql); 
         } catch (SQLException e) { 
             System.out.println("Error al guardar el pedido: " + e.getMessage()); 
-        } 
+        }*/
+        
+        //Se reemplaza el ódigo anterior por esta llamda
+        guardarPedidoEnBD(nombreCliente, total);
         
         //solid: responsabilidad unica - separar generacion de factura
         /*try { 
@@ -167,7 +185,19 @@ public class GestorPedidos {
   
         System.out.println("[LOG] Pedido procesado para " + nombreCliente 
                             + " - Total: " + total); 
-    } 
+    }
+    
+    // Nuevo método privado para eliminar en BD (con PreparedStatement para seguridad)
+    private void eliminarPedidoDeBD(int idPedido) {
+        try {
+            String sql = "DELETE FROM pedidos WHERE id = ?";
+            PreparedStatement pstmt = conexionBD.prepareStatement(sql);
+            pstmt.setInt(1, idPedido);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error al cancelar el pedido: " + e.getMessage());
+        }
+    }
     
     public void cancelarPedido(String nombreCliente, String emailCliente, int idPedido) { 
         // Las validaciones duplicadas en procesarPedido() y cancelarPedido()
@@ -184,13 +214,18 @@ public class GestorPedidos {
             return;
         }
         
-        try { 
+        //solid: responsabilidad unica - separar persistencia en bdd
+        /*try { 
             Statement stmt = conexionBD.createStatement(); 
             String sql = "DELETE FROM pedidos WHERE id = " + idPedido; 
             stmt.executeUpdate(sql); 
         } catch (SQLException e) { 
             System.out.println("Error al cancelar el pedido: " + e.getMessage()); 
-        } 
+        }*/
+        
+        // El bloque antiguo por:
+        eliminarPedidoDeBD(idPedido);
+
         //solid: responsabilidad unica - separar notificacion por correo
         /*
         System.out.println("Enviando correo a " + emailCliente + "..."); 
