@@ -22,6 +22,7 @@ public class GestorPedidos {
         } 
     }
     // Nuevo método privado que centraliza las validaciones
+    //Eliminar duplicacion de codigo (DRY)
     private boolean validarCliente(String nombreCliente, String emailCliente) {
         if (nombreCliente == null || nombreCliente.trim().isEmpty()) {
             System.out.println("Error: nombre de cliente invalido");
@@ -34,6 +35,22 @@ public class GestorPedidos {
         return true;
     }
     
+    // Nuevo método privado que calcula el descuento
+    //Reemplaza el segmento de codigo Abierto/Cerrado - Extraer calculo de descuentos
+    private double calcularDescuento(double subtotal, String tipoCliente) {
+        switch (tipoCliente.toUpperCase()) {
+            case "VIP":
+                return subtotal * 0.20;
+            case "FRECUENTE":
+                return subtotal * 0.10;
+            case "REGULAR":
+                return subtotal * 0.05;
+            case "NUEVO":
+            default:
+                return 0;
+        }
+    }
+    
     public void procesarPedido(String nombreCliente, String emailCliente, 
                                   List<String> nombresProductos, 
                                   List<Double> preciosProductos, 
@@ -41,6 +58,7 @@ public class GestorPedidos {
                                   String tipoCliente) { 
         
         // Las validaciones duplicadas en procesarPedido() y cancelarPedido()
+        //Eliminar duplicacion de codigo (DRY)
         /*if (nombreCliente == null || nombreCliente.trim().isEmpty()) { 
             System.out.println("Error: nombre de cliente invalido"); 
             return; 
@@ -58,8 +76,9 @@ public class GestorPedidos {
         for (int i = 0; i < nombresProductos.size(); i++) { 
             subtotal += preciosProductos.get(i) * cantidades.get(i); 
         } 
-  
-        double descuento = 0; 
+        
+        //Abierto/Cerrado - Extraer calculo de descuentos
+        /*double descuento = 0; 
         if (tipoCliente.equals("VIP")) { 
             descuento = subtotal * 0.20; 
         } else if (tipoCliente.equals("FRECUENTE")) { 
@@ -68,8 +87,10 @@ public class GestorPedidos {
             descuento = subtotal * 0.05; 
         } else if (tipoCliente.equals("NUEVO")) { 
             descuento = 0; 
-        } 
-  
+        }*/ 
+        //Reemplazo de codigo anterior
+        double descuento = calcularDescuento(subtotal, tipoCliente);
+        
         double impuesto = (subtotal - descuento) * 0.12; 
         double total = subtotal - descuento + impuesto; 
   
