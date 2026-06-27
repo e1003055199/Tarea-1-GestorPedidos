@@ -51,6 +51,29 @@ public class GestorPedidos {
         }
     }
     
+    // Nuevo método privado dedicado a generar la factura
+    //solid: eesponsabilidad unica - separar generacion de factura
+    private void generarFactura(String nombreCliente, List<String> nombresProductos,
+            List<Integer> cantidades, List<Double> preciosProductos,
+            double subtotal, double descuento, double impuesto, double total) {
+        try {
+            FileWriter writer = new FileWriter("factura_" + nombreCliente + ".txt");
+            writer.write("FACTURA\n");
+            writer.write("Cliente: " + nombreCliente + "\n");
+            for (int i = 0; i < nombresProductos.size(); i++) {
+                writer.write(nombresProductos.get(i) + " x" + cantidades.get(i)
+                + " = $" + (preciosProductos.get(i) * cantidades.get(i)) + "\n");
+            }
+            writer.write("Subtotal: $" + subtotal + "\n");
+            writer.write("Descuento: $" + descuento + "\n");
+            writer.write("Impuesto: $" + impuesto + "\n");
+            writer.write("TOTAL: $" + total + "\n");
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Error al generar la factura: " + e.getMessage());
+        }
+    }
+    
     public void procesarPedido(String nombreCliente, String emailCliente, 
                                   List<String> nombresProductos, 
                                   List<Double> preciosProductos, 
@@ -102,8 +125,9 @@ public class GestorPedidos {
         } catch (SQLException e) { 
             System.out.println("Error al guardar el pedido: " + e.getMessage()); 
         } 
-  
-        try { 
+        
+        //solid: eesponsabilidad unica - separar generacion de factura
+        /*try { 
             FileWriter writer = new FileWriter("factura_" + nombreCliente + ".txt"); 
             writer.write("FACTURA\n"); 
             writer.write("Cliente: " + nombreCliente + "\n"); 
@@ -118,8 +142,11 @@ public class GestorPedidos {
             writer.close(); 
         } catch (IOException e) { 
             System.out.println("Error al generar la factura: " + e.getMessage()); 
-        } 
-  
+        } */
+        
+        generarFactura(nombreCliente, nombresProductos, cantidades, preciosProductos, 
+               subtotal, descuento, impuesto, total);
+        
         System.out.println("Enviando correo a " + emailCliente + "..."); 
         System.out.println("Asunto: Confirmacion de pedido"); 
         System.out.println("Cuerpo: Estimado " + nombreCliente + ", su pedido por $" 
