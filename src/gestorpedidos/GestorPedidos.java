@@ -21,21 +21,38 @@ public class GestorPedidos {
             e.printStackTrace(); 
         } 
     }
+    // Nuevo método privado que centraliza las validaciones
+    private boolean validarCliente(String nombreCliente, String emailCliente) {
+        if (nombreCliente == null || nombreCliente.trim().isEmpty()) {
+            System.out.println("Error: nombre de cliente invalido");
+            return false;
+        }
+        if (emailCliente == null || !emailCliente.contains("@")) {
+            System.out.println("Error: email invalido");
+            return false;
+        }
+        return true;
+    }
     
     public void procesarPedido(String nombreCliente, String emailCliente, 
                                   List<String> nombresProductos, 
                                   List<Double> preciosProductos, 
                                   List<Integer> cantidades, 
                                   String tipoCliente) { 
-  
-        if (nombreCliente == null || nombreCliente.trim().isEmpty()) { 
+        
+        // Las validaciones duplicadas en procesarPedido() y cancelarPedido()
+        /*if (nombreCliente == null || nombreCliente.trim().isEmpty()) { 
             System.out.println("Error: nombre de cliente invalido"); 
             return; 
         } 
         if (emailCliente == null || !emailCliente.contains("@")) { 
             System.out.println("Error: email invalido"); 
             return; 
-        } 
+        }*/
+        //Se reemplaza el ódigo anterior por esta llamda
+        if (!validarCliente(nombreCliente, emailCliente)) {
+            return;
+        }
   
         double subtotal = 0; 
         for (int i = 0; i < nombresProductos.size(); i++) { 
