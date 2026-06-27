@@ -92,7 +92,7 @@ public class GestorPedidos {
     }
     
     // Nuevo método privado para guardar en BD (con PreparedStatement para seguridad)
-    private void guardarPedidoEnBD(String nombreCliente, double total) {
+    /*private void guardarPedidoEnBD(String nombreCliente, double total) {
         try {
             String sql = "INSERT INTO pedidos (cliente, total) VALUES (?, ?)";
             PreparedStatement pstmt = conexionBD.prepareStatement(sql);
@@ -102,7 +102,7 @@ public class GestorPedidos {
         } catch (SQLException e) {
             System.out.println("Error al guardar el pedido: " + e.getMessage());
         }
-    }
+    }*/
     
     public void procesarPedido(String nombreCliente, String emailCliente, 
                                   List<String> nombresProductos, 
@@ -159,7 +159,7 @@ public class GestorPedidos {
         }*/
         
         //Se reemplaza el ódigo anterior por esta llamda
-        guardarPedidoEnBD(nombreCliente, total);
+        //guardarPedidoEnBD(nombreCliente, total);
         
         //solid: responsabilidad unica - separar generacion de factura
         /*try { 
@@ -195,7 +195,7 @@ public class GestorPedidos {
         System.out.println("[LOG] Pedido procesado para " + nombreCliente 
                             + " - Total: " + total); 
     }
-    
+    /*
     // Nuevo método privado para eliminar en BD (con PreparedStatement para seguridad)
     private void eliminarPedidoDeBD(int idPedido) {
         try {
@@ -206,7 +206,7 @@ public class GestorPedidos {
         } catch (SQLException e) {
             System.out.println("Error al cancelar el pedido: " + e.getMessage());
         }
-    }
+    }*/
     
     public void cancelarPedido(String nombreCliente, String emailCliente, int idPedido) { 
         // Las validaciones duplicadas en procesarPedido() y cancelarPedido()
@@ -233,7 +233,7 @@ public class GestorPedidos {
         }*/
         
         // El bloque antiguo por:
-        eliminarPedidoDeBD(idPedido);
+        //eliminarPedidoDeBD(idPedido);
 
         //solid: responsabilidad unica - separar notificacion por correo
         /*
