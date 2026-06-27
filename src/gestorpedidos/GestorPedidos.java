@@ -11,9 +11,10 @@ import java.sql.*;
  * @author ROGSTRIX
  */
 public class GestorPedidos {
-    
-    
     private Connection conexionBD;
+    private final CalculadoraDescuentos calculadora;
+    
+    
     
     //solid inversion de dependencias: inyeccion de dependencias
     // Constructor con credenciales hardcodeadas
@@ -26,8 +27,9 @@ public class GestorPedidos {
     }*/
     
     // Constructor que recibe la conexión (inyección de dependencias)
-    public GestorPedidos(Connection conexionBD) {
+    public GestorPedidos(Connection conexionBD, CalculadoraDescuentos calculadora) {
         this.conexionBD = conexionBD;
+        this.calculadora = calculadora;
     }
 
    
@@ -48,7 +50,7 @@ public class GestorPedidos {
     
     // Nuevo método privado que calcula el descuento
     //Reemplaza el segmento de codigo Abierto/Cerrado - Extraer calculo de descuentos
-    private double calcularDescuento(double subtotal, String tipoCliente) {
+    /*private double calcularDescuento(double subtotal, String tipoCliente) {
         switch (tipoCliente.toUpperCase()) {
             case "VIP":
                 return subtotal * 0.20;
@@ -60,7 +62,7 @@ public class GestorPedidos {
             default:
                 return 0;
         }
-    }
+    }*/
     
     // Nuevo método privado dedicado a generar la factura
     //solid: responsabilidad unica - separar generacion de factura
@@ -144,8 +146,9 @@ public class GestorPedidos {
             descuento = 0; 
         }*/ 
         //Reemplazo de codigo anterior
-        double descuento = calcularDescuento(subtotal, tipoCliente);
+        //double descuento = calcularDescuento(subtotal, tipoCliente);
         
+        double descuento = calculadora.calcular(subtotal, tipoCliente);
         double impuesto = (subtotal - descuento) * 0.12; 
         double total = subtotal - descuento + impuesto;
         

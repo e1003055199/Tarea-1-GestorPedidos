@@ -56,3 +56,13 @@ class Validador {
         return true;
     }
 }
+class CalculadoraDescuentos {
+    public double calcular(double subtotal, String tipoCliente) {
+        switch (tipoCliente.toUpperCase()) {
+            case "VIP": return subtotal * 0.20;
+            case "FRECUENTE": return subtotal * 0.10;
+            case "REGULAR": return subtotal * 0.05;
+            default: return 0;
+        }
+    }
+}
