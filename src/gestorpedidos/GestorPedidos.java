@@ -52,7 +52,7 @@ public class GestorPedidos {
     }
     
     // Nuevo método privado dedicado a generar la factura
-    //solid: eesponsabilidad unica - separar generacion de factura
+    //solid: responsabilidad unica - separar generacion de factura
     private void generarFactura(String nombreCliente, List<String> nombresProductos,
             List<Integer> cantidades, List<Double> preciosProductos,
             double subtotal, double descuento, double impuesto, double total) {
@@ -72,6 +72,14 @@ public class GestorPedidos {
         } catch (IOException e) {
             System.out.println("Error al generar la factura: " + e.getMessage());
         }
+    }
+    
+    // Nuevo método privado para notificación
+    //solid: responsabilidad unica - separar notificacion por correo
+    private void enviarNotificacion(String email, String asunto, String cuerpo) {
+        System.out.println("Enviando correo a " + email + "...");
+        System.out.println("Asunto: " + asunto);
+        System.out.println("Cuerpo: " + cuerpo);
     }
     
     public void procesarPedido(String nombreCliente, String emailCliente, 
@@ -126,7 +134,7 @@ public class GestorPedidos {
             System.out.println("Error al guardar el pedido: " + e.getMessage()); 
         } 
         
-        //solid: eesponsabilidad unica - separar generacion de factura
+        //solid: responsabilidad unica - separar generacion de factura
         /*try { 
             FileWriter writer = new FileWriter("factura_" + nombreCliente + ".txt"); 
             writer.write("FACTURA\n"); 
@@ -143,14 +151,19 @@ public class GestorPedidos {
         } catch (IOException e) { 
             System.out.println("Error al generar la factura: " + e.getMessage()); 
         } */
-        
+        //Se reemplaza el ódigo anterior por esta llamda
         generarFactura(nombreCliente, nombresProductos, cantidades, preciosProductos, 
                subtotal, descuento, impuesto, total);
         
-        System.out.println("Enviando correo a " + emailCliente + "..."); 
+        //solid: responsabilidad unica - separar notificacion por correo
+        /*System.out.println("Enviando correo a " + emailCliente + "..."); 
         System.out.println("Asunto: Confirmacion de pedido"); 
         System.out.println("Cuerpo: Estimado " + nombreCliente + ", su pedido por $" 
-                            + total + " ha sido procesado."); 
+                            + total + " ha sido procesado.");*/
+        
+        //Se reemplaza el ódigo anterior por esta llamda
+        enviarNotificacion(emailCliente, "Confirmacion de pedido",
+                "Estimado " + nombreCliente + ", su pedido por $" + total + " ha sido procesado.");
   
         System.out.println("[LOG] Pedido procesado para " + nombreCliente 
                             + " - Total: " + total); 
@@ -178,11 +191,15 @@ public class GestorPedidos {
         } catch (SQLException e) { 
             System.out.println("Error al cancelar el pedido: " + e.getMessage()); 
         } 
-  
+        //solid: responsabilidad unica - separar notificacion por correo
+        /*
         System.out.println("Enviando correo a " + emailCliente + "..."); 
         System.out.println("Asunto: Cancelacion de pedido"); 
         System.out.println("Cuerpo: Estimado " + nombreCliente + ", su pedido #" 
-                            + idPedido + " ha sido cancelado."); 
+                            + idPedido + " ha sido cancelado.");*/
+        //Se reemplaza el ódigo anterior por esta llamda
+        enviarNotificacion(emailCliente, "Cancelacion de pedido",
+                "Estimado " + nombreCliente + ", su pedido #" + idPedido + " ha sido cancelado.");
     } 
     /**
      * @param args the command line arguments
