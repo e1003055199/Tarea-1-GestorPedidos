@@ -109,15 +109,20 @@ public class GestorPedidos {
     } 
     
     public void cancelarPedido(String nombreCliente, String emailCliente, int idPedido) { 
-        if (nombreCliente == null || nombreCliente.trim().isEmpty()) { 
+        // Las validaciones duplicadas en procesarPedido() y cancelarPedido()
+        /*if (nombreCliente == null || nombreCliente.trim().isEmpty()) { 
             System.out.println("Error: nombre de cliente invalido"); 
             return; 
         } 
         if (emailCliente == null || !emailCliente.contains("@")) { 
             System.out.println("Error: email invalido"); 
             return; 
-        } 
-  
+        }*/
+        //Se reemplaza el ódigo anterior por esta llamda
+        if (!validarCliente(nombreCliente, emailCliente)) {
+            return;
+        }
+        
         try { 
             Statement stmt = conexionBD.createStatement(); 
             String sql = "DELETE FROM pedidos WHERE id = " + idPedido; 
