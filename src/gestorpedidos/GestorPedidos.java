@@ -15,6 +15,7 @@ public class GestorPedidos {
     private final CalculadoraDescuentos calculadora;
     private final GeneradorFacturas generador;
     private final Notificador notificador;
+    private final RepositorioPedidos repositorio;
     
     //solid inversion de dependencias: inyeccion de dependencias
     // Constructor con credenciales hardcodeadas
@@ -27,11 +28,13 @@ public class GestorPedidos {
     }*/
     
     // Constructor que recibe la conexión (inyección de dependencias)
-    public GestorPedidos(Connection conexionBD, CalculadoraDescuentos calculadora, GeneradorFacturas generador, Notificador notificador) {
+    public GestorPedidos(Connection conexionBD, CalculadoraDescuentos calculadora, 
+            GeneradorFacturas generador, Notificador notificador, RepositorioPedidos repositorio) {
         this.conexionBD = conexionBD;
         this.calculadora = calculadora;
         this.generador = generador;
         this.notificador = notificador;
+        this.repositorio = repositorio;
     }
 
    
@@ -167,7 +170,7 @@ public class GestorPedidos {
         
         //Se reemplaza el ódigo anterior por esta llamda
         //guardarPedidoEnBD(nombreCliente, total);
-        
+        repositorio.guardar(nombreCliente, total);
         //solid: responsabilidad unica - separar generacion de factura
         /*try { 
             FileWriter writer = new FileWriter("factura_" + nombreCliente + ".txt"); 
@@ -245,7 +248,9 @@ public class GestorPedidos {
         
         // El bloque antiguo por:
         //eliminarPedidoDeBD(idPedido);
-
+        
+        repositorio.eliminar(idPedido);
+        
         //solid: responsabilidad unica - separar notificacion por correo
         /*
         System.out.println("Enviando correo a " + emailCliente + "..."); 
