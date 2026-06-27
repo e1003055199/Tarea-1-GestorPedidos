@@ -81,3 +81,13 @@ class GeneradorFacturas {
         }
     }
 }
+
+class Notificador {
+    public void enviar(String email, String asunto, String cuerpo) {
+        System.out.println("--- NOTIFICACIÓN ---");
+        System.out.println("Para: " + email);
+        System.out.println("Asunto: " + asunto);
+        System.out.println("Mensaje: " + cuerpo);
+        System.out.println("--------------------");
+    }
+}

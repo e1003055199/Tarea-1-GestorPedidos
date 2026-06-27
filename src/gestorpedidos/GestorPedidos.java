@@ -14,7 +14,7 @@ public class GestorPedidos {
     private Connection conexionBD;
     private final CalculadoraDescuentos calculadora;
     private final GeneradorFacturas generador;
-    
+    private final Notificador notificador;
     
     //solid inversion de dependencias: inyeccion de dependencias
     // Constructor con credenciales hardcodeadas
@@ -27,10 +27,11 @@ public class GestorPedidos {
     }*/
     
     // Constructor que recibe la conexión (inyección de dependencias)
-    public GestorPedidos(Connection conexionBD, CalculadoraDescuentos calculadora, GeneradorFacturas generador) {
+    public GestorPedidos(Connection conexionBD, CalculadoraDescuentos calculadora, GeneradorFacturas generador, Notificador notificador) {
         this.conexionBD = conexionBD;
         this.calculadora = calculadora;
         this.generador = generador;
+        this.notificador = notificador;
     }
 
    
@@ -90,11 +91,11 @@ public class GestorPedidos {
     
     // Nuevo método privado para notificación
     //solid: responsabilidad unica - separar notificacion por correo
-    private void enviarNotificacion(String email, String asunto, String cuerpo) {
+    /*private void enviarNotificacion(String email, String asunto, String cuerpo) {
         System.out.println("Enviando correo a " + email + "...");
         System.out.println("Asunto: " + asunto);
         System.out.println("Cuerpo: " + cuerpo);
-    }
+    }*/
     
     // Nuevo método privado para guardar en BD (con PreparedStatement para seguridad)
     /*private void guardarPedidoEnBD(String nombreCliente, double total) {
@@ -197,11 +198,13 @@ public class GestorPedidos {
                             + total + " ha sido procesado.");*/
         
         //Se reemplaza el ódigo anterior por esta llamda
-        enviarNotificacion(emailCliente, "Confirmacion de pedido",
+        /*enviarNotificacion(emailCliente, "Confirmacion de pedido",
                 "Estimado " + nombreCliente + ", su pedido por $" + total + " ha sido procesado.");
   
         System.out.println("[LOG] Pedido procesado para " + nombreCliente 
-                            + " - Total: " + total); 
+                            + " - Total: " + total); */
+        notificador.enviar(emailCliente, "Confirmacion de pedido",
+                "Estimado " + nombreCliente + ", su pedido por $" + total + " ha sido procesado.");
     }
     /*
     // Nuevo método privado para eliminar en BD (con PreparedStatement para seguridad)
@@ -250,7 +253,9 @@ public class GestorPedidos {
         System.out.println("Cuerpo: Estimado " + nombreCliente + ", su pedido #" 
                             + idPedido + " ha sido cancelado.");*/
         //Se reemplaza el ódigo anterior por esta llamda
-        enviarNotificacion(emailCliente, "Cancelacion de pedido",
+        /*enviarNotificacion(emailCliente, "Cancelacion de pedido",
+                "Estimado " + nombreCliente + ", su pedido #" + idPedido + " ha sido cancelado.");*/
+        notificador.enviar(emailCliente, "Cancelacion de pedido",
                 "Estimado " + nombreCliente + ", su pedido #" + idPedido + " ha sido cancelado.");
     } 
     /**
